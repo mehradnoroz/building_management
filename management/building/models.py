@@ -4,7 +4,7 @@ import uuid
 
 class Building(models.Model):
     
-    class BuildingType(models.Choices):
+    class BuildingType(models.TextChoices):
         RESIDENTIAL = 'Residential', 'مسکونی'
         COMMERCIAL = 'Commercial', 'تجاری'
         OFFICE = 'Office', 'اداری'
@@ -12,7 +12,7 @@ class Building(models.Model):
     b_buildingtype=models.CharField(max_length=15,choices=BuildingType.choices,default=BuildingType.RESIDENTIAL)
     b_year_build=models.DateField()
     b_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    b_image = models.ImageField(upload_to='building_images/', null=True, blank=True)
+    b_image = models.ImageField(upload_to='images/', null=True, blank=True)
     b_name=models.CharField(max_length=50)
     b_address=models.CharField(max_length=255)
     b_num_floor=models.PositiveIntegerField()
@@ -31,11 +31,7 @@ class Building(models.Model):
     def __str__(self):
         return self.b_name
     
-    # def b_cost_building(self):
-    #     elevator_cost=self.elevatorss.first().e_cost_for_services_monthly if self.elevatorss.exists() else 0
-    #     building_cost=self.b_num_floor*self.b_num_of_units_in_every_floor*self.b_cost_charge_for_every_units
-    #     total_cost=elevator_cost+building_cost
-    #     return total_cost
+    
 class Meeting(models.Model):
     building = models.ForeignKey('Building', on_delete=models.CASCADE,related_name='meeting')
     date=models.DateTimeField()
